@@ -1,8 +1,6 @@
 @layout('master')
 
 @section('container')
-
-	<h1></h1>
 	
 	{{ Form::open('/') }}
 		{{ Form::text('url') }}

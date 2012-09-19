@@ -37,6 +37,21 @@ Route::get('/', function()
 	return View::make('home.index');
 });
 
+Route::post('/', function()
+{
+	$url = Input::get('url');
+	
+	// Validatation
+	
+	// If url exists in table, return it. 
+	
+	// Otherise add a new row and return shortened URL
+	
+	// Create a results view
+	
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | Application 404 & 500 Error Handlers
