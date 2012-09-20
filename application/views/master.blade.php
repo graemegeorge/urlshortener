@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>URLsHortener</title>
+	<title>URL Shortener</title>
+	{{ HTML::style('css/style.css') }}
 </head>
 <body>
 	

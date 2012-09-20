@@ -1,37 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Simply tell Laravel the HTTP verbs and URIs it should respond to. It is a
-| breeze to setup your application using Laravel's RESTful routing and it
-| is perfectly suited for building large applications and simple APIs.
-|
-| Let's respond to a simple GET request to http://example.com/hello:
-|
-|		Route::get('hello', function()
-|		{
-|			return 'Hello World!';
-|		});
-|
-| You can even respond to more than one URI:
-|
-|		Route::post(array('hello', 'world'), function()
-|		{
-|			return 'Hello World!';
-|		});
-|
-| It's easy to allow URI wildcards using (:num) or (:any):
-|
-|		Route::put('hello/(:any)', function($name)
-|		{
-|			return "Welcome, $name.";
-|		});
-|
-*/
-
 Route::get('/', function()
 {
 	return View::make('home.index');
@@ -39,30 +7,25 @@ Route::get('/', function()
 
 Route::post('/', function()
 {
-	$url = Input::get('url'); // http://tutsplus.com
+	$url = Input::get('url');
 	
 	// Validatation
-	$validation = Validator::make(array(
-		'url'	=> $url
-	), array(
-		'url'	=> 'required|url'
-	);
+	$v = Url::validate(array('url' => $url));
+	if ( $v !== true ) {
+		return Redirect::to('/')->with_errors($v->errors);
+	}
 	
 	// If url exists in table, return it. 
 	$record = Url::where_url($url)->first();
-	
 	if ( $record ) {
-		// then return it
 		return View::make('home.result')
 				->with('shortened', $record->shortened);
 	}
 	
-	$shortened = Url::get_unique_short_url();
-	
 	// Otherise add a new row and return shortened URL
 	$row = Url::create(array(
 		'url' =>$url,
-		'shortened' => $shortened
+		'shortened' => Url::get_unique_short_url()
 	));
 	
 	// Create a results view

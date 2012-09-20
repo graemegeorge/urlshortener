@@ -1,0 +1,27 @@
+BODY {
+	font-size:1em;
+	margin:0 auto;
+	background:#333;
+	color:#fff;
+	width:500px;
+	padding:100px;
+	text-align:center;
+	font-family:sans-serif;
+}
+
+input[type=text] {
+	width:85%;
+	height:40px;
+	font-size:25px;
+	color:#666;
+}
+
+a {
+	color:#aaa;
+	text-decoration: none;
+}
+
+.error {
+	color:#900;
+	font-style: italic;
+}
