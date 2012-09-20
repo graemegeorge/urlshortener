@@ -39,16 +39,49 @@ Route::get('/', function()
 
 Route::post('/', function()
 {
-	$url = Input::get('url');
+	$url = Input::get('url'); // http://tutsplus.com
 	
 	// Validatation
+	$validation = Validator::make(array(
+		'url'	=> $url
+	), array(
+		'url'	=> 'required|url'
+	);
 	
 	// If url exists in table, return it. 
+	$record = Url::where_url($url)->first();
+	
+	if ( $record ) {
+		// then return it
+		return View::make('home.result')
+				->with('shortened', $record->shortened);
+	}
+	
+	$shortened = Url::get_unique_short_url();
 	
 	// Otherise add a new row and return shortened URL
+	$row = Url::create(array(
+		'url' =>$url,
+		'shortened' => $shortened
+	));
 	
 	// Create a results view
+	if ( $row ) {
+		return View::make('home.result')->with('shortened', $row->shortened);
+	}
 	
+});
+
+Route::get('(:any)', function($shortened)
+{
+	// query the DB for the row with that short url
+	$row = Url::where_shortened($shortened)->first();
+	
+	// if not found, redirect to the home page
+	if ( is_null($row) ) return Redirect::to('/');
+	
+	// Otherwise, fetch the URL, and redirect.	
+	return Redirect::to($row->url);
 });
 
 
